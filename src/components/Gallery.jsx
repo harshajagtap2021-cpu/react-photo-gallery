@@ -20,59 +20,73 @@ function Gallery() {
     );
   }, [photos, search]);
 
-  if (loading) return <p className="text-center">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (loading) return <p className="text-center text-lg mt-10">Loading...</p>;
+  if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
 
   return (
-    <div className="p-6">
+    <div className="px-6">
 
-      <input
-        type="text"
-        placeholder="Search by author..."
-        className="border p-2 w-full mb-6 rounded"
-        onChange={handleSearch}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-  {filteredPhotos.length === 0 ? (
-    <p className="text-center col-span-4 text-gray-500">
-      No photos found
-    </p>
-  ) : (
-    filteredPhotos.map((photo) => (
-      <div key={photo.id} className="border rounded-lg p-2">
-
-        <img
-          src={photo.download_url}
-          alt={photo.author}
-          className="w-full h-40 object-cover"
+      {/* Search Bar */}
+      <div className="max-w-xl mx-auto mb-10">
+        <input
+          type="text"
+          placeholder="🔍 Search by author..."
+          className="w-full px-5 py-3 rounded-full border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          onChange={handleSearch}
         />
+      </div>
 
-        <div className="flex justify-between items-center mt-2">
+      {/* If no photo found */}
+      {filteredPhotos.length === 0 ? (
+        <p className="text-center text-2xl font-bold text-gray-400 mt-10">
+          📷 Photo Not Found
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-8">
 
-          <p className="font-semibold">{photo.author}</p>
+          {filteredPhotos.map((photo) => (
+            <div
+              key={photo.id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300"
+            >
 
-          <button
-            onClick={() =>
-              dispatch({
-                type: favourites.some((fav) => fav.id === photo.id)
-                  ? "REMOVE_FAV"
-                  : "ADD_FAV",
-                payload: photo,
-              })
-            }
-          >
-            {favourites.some((fav) => fav.id === photo.id) ? "❤️" : "🤍"}
-          </button>
+              {/* Image */}
+              <div className="overflow-hidden">
+                <img
+                  src={`https://picsum.photos/id/${photo.id}/400/300`}
+                  alt={photo.author}
+                  className="w-full h-48 object-cover hover:scale-110 transition duration-500"
+                />
+              </div>
+
+              {/* Author + Heart */}
+              <div className="flex justify-between items-center p-4">
+
+                <p className="text-gray-900 font-bold text-base tracking-wide">
+                  {photo.author}
+                </p>
+
+                <button
+                  className="text-xl transition transform hover:scale-125"
+                  onClick={() =>
+                    dispatch({
+                      type: favourites.some((fav) => fav.id === photo.id)
+                        ? "REMOVE_FAV"
+                        : "ADD_FAV",
+                      payload: photo,
+                    })
+                  }
+                >
+                  {favourites.some((fav) => fav.id === photo.id) ? "❤️" : "🤍"}
+                </button>
+
+              </div>
+
+            </div>
+          ))}
 
         </div>
-
-      </div>
-    ))
-  )}
-
-</div>
+      )}
     </div>
   );
 }
