@@ -20,7 +20,12 @@ function Gallery() {
     );
   }, [photos, search]);
 
-  if (loading) return <p className="text-center text-lg mt-10">Loading...</p>;
+  if (loading)
+  return (
+    <div className="flex justify-center items-center mt-20">
+      <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
 
   return (
@@ -42,7 +47,7 @@ function Gallery() {
           📷 Photo Not Found
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-8">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
           {filteredPhotos.map((photo) => (
             <div
