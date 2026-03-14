@@ -35,37 +35,44 @@ function Gallery() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        {filteredPhotos.map((photo) => (
-          <div key={photo.id} className="border rounded-lg p-2">
+  {filteredPhotos.length === 0 ? (
+    <p className="text-center col-span-4 text-gray-500">
+      No photos found
+    </p>
+  ) : (
+    filteredPhotos.map((photo) => (
+      <div key={photo.id} className="border rounded-lg p-2">
 
-            <img
-              src={photo.download_url}
-              alt={photo.author}
-              className="w-full h-40 object-cover"
-            />
+        <img
+          src={photo.download_url}
+          alt={photo.author}
+          className="w-full h-40 object-cover"
+        />
 
-            <div className="flex justify-between items-center mt-2">
+        <div className="flex justify-between items-center mt-2">
 
-              <p className="font-semibold">{photo.author}</p>
+          <p className="font-semibold">{photo.author}</p>
 
-              <button
-                onClick={() =>
-                  dispatch({
-                    type: favourites.some((fav) => fav.id === photo.id)
-                      ? "REMOVE_FAV"
-                      : "ADD_FAV",
-                    payload: photo,
-                  })
-                }
-              >
-                {favourites.some((fav) => fav.id === photo.id) ? "❤️" : "🤍"}
-              </button>
+          <button
+            onClick={() =>
+              dispatch({
+                type: favourites.some((fav) => fav.id === photo.id)
+                  ? "REMOVE_FAV"
+                  : "ADD_FAV",
+                payload: photo,
+              })
+            }
+          >
+            {favourites.some((fav) => fav.id === photo.id) ? "❤️" : "🤍"}
+          </button>
 
-            </div>
-          </div>
-        ))}
+        </div>
 
       </div>
+    ))
+  )}
+
+</div>
     </div>
   );
 }
